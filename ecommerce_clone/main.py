@@ -11,17 +11,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Use your actual frontend origin if needed
+    allow_origins=["*"],  # Replace with actual frontend origin if needed
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-
-
 @app.get("/products")
-def get_products(skip: int = 0, limit: int = 6):
+def get_products(skip: int = 0, limit: int = 50, category: str = None):
     try:
         file_path = os.path.join("data", "products.json")
 
@@ -32,7 +30,15 @@ def get_products(skip: int = 0, limit: int = 6):
             raw_data = json.load(f)
 
         products = []
+        categories_set = set()
+
         for i in range(len(raw_data["title"])):
+            cat = raw_data.get("category", {}).get(str(i), "Unknown")
+            categories_set.add(cat)
+
+            if category and cat != category:
+                continue
+
             product = {
                 "title": raw_data["title"][str(i)],
                 "price": raw_data["price"][str(i)],
@@ -40,22 +46,23 @@ def get_products(skip: int = 0, limit: int = 6):
                 "rating": raw_data["rating"][str(i)],
                 "url": raw_data["url"][str(i)],
                 "image_url": raw_data["image_url"][str(i)],
+                "category": cat,
             }
             products.append(product)
 
-        # Log full product count
-        logging.info(f"Total products found: {len(products)}")
-
-        # Log the items being returned (safe slice)
-        logging.info(f"Returning products[{skip}:{skip + limit}]: {products[skip:skip + limit]}")
+        categories = sorted(list(categories_set))
 
         return {
             "total": len(products),
-            "items": products[skip: skip + limit]
+            "items": products[skip: skip + limit],
+            "categories": categories
         }
 
     except Exception as e:
         logging.error(str(EComException(e, sys)))
         raise EComException(e, sys)
+
+
+# Serve frontend files
 static_path = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/", StaticFiles(directory=static_path, html=True), name="static")

@@ -2,18 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100">
 
-  <div class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-4 text-center">Product List</h1>
+  <div class="flex min-h-screen">
     
-    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r p-4">
+      <h2 class="text-xl font-bold mb-4">Categories</h2>
+      <ul id="category-list" class="space-y-1 text-sm">
+        <!-- Categories will be injected here -->
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-6">
+      <nav class="text-sm text-gray-500 mb-4">Home / All Products</nav>
+
+      <h1 class="text-2xl font-bold mb-2">All products</h1>
+      <p id="result-count" class="mb-4"></p>
+
+      <div class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded mb-6">
+        <strong>Warning!</strong> This is a demo website for web scraping purposes.
+      </div>
+
+      <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Products will be inserted here by scripts.js -->
+      </div>
+    </main>
   </div>
 
-  <script src="scripts.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
