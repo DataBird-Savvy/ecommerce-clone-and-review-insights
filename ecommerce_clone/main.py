@@ -9,9 +9,10 @@ from exception import EComException
 
 app = FastAPI()
 
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with actual frontend origin if needed
+    allow_origins=["*"],  # Update this in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,11 +31,13 @@ def get_products(skip: int = 0, limit: int = 50, category: str = None):
             raw_data = json.load(f)
 
         products = []
-        categories_set = set()
+        categories_list = []
 
         for i in range(len(raw_data["title"])):
             cat = raw_data.get("category", {}).get(str(i), "Unknown")
-            categories_set.add(cat)
+
+            if cat not in categories_list:
+                categories_list.append(cat)  # Maintain original order
 
             if category and cat != category:
                 continue
@@ -50,12 +53,13 @@ def get_products(skip: int = 0, limit: int = 50, category: str = None):
             }
             products.append(product)
 
-        categories = sorted(list(categories_set))
+        # Only sort products by title
+        sorted_products = sorted(products, key=lambda x: x["title"].lower())
 
         return {
-            "total": len(products),
-            "items": products[skip: skip + limit],
-            "categories": categories
+            "total": len(sorted_products),
+            "items": sorted_products[skip: skip + limit],
+            "categories": categories_list  # Not sorted
         }
 
     except Exception as e:
