@@ -2,7 +2,7 @@
 
 # 🧠 Shopify Review Insights & E-Commerce Clone (AI-Powered)
 
-This project was completed as part of a technical assignment for a **Remote AI ChatGPT Expert** role. It combines **web scraping**, **frontend replication**, and **customer review analysis** using AI tools such as **PandasAI**, **LangChain**, and **ChatGPT**.
+This project was completed as part of a technical assignment for a **Remote AI ChatGPT Expert** role. It combines **web scraping**, **frontend replication**, and **customer review analysis** using AI tools such as **PandasAI**, **LangChain**, and **AI**.
 
 ---
 
@@ -31,7 +31,7 @@ This project was completed as part of a technical assignment for a **Remote AI C
 ## 🤖 Tech Stack
 
 - **Languages**: Python, HTML, CSS
-- **Libraries**: Pandas, NumPy, PandasAI, LangChain, OpenAI / Groq
+- **Libraries**: Pandas, NumPy, PandasAI, LangChain, Groq
 - **Tools**: Jupyter Notebook, VSCode
 - **Others**: `tabulate`, `textwrap`, `.env` for API key management
 
