@@ -20,7 +20,9 @@
 
     <!-- Main content -->
     <main class="flex-1 p-6">
-      <nav class="text-sm text-gray-500 mb-4">Home / <span id="breadcrumb-category">All Products</span></nav>
+      <nav class="text-sm text-gray-500 mb-4">
+        Home / <span id="breadcrumb-category">All Products</span>
+      </nav>
 
       <h1 class="text-2xl font-bold mb-2" id="page-title">All products</h1>
       <p id="result-count" class="mb-4"></p>
@@ -29,9 +31,31 @@
         <strong>Warning!</strong> This is a demo website for web scraping purposes.
       </div>
 
+      <!-- Product Grid -->
       <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Products will be inserted here -->
       </div>
+
+  <!-- Pagination Controls -->
+      <div class="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <!-- Centered Page Info -->
+        <div class="w-full sm:w-auto text-center sm:text-left mb-4 sm:mb-0 mx-auto">
+          <span id="page-info" class="text-sm text-gray-700">Page 1 of 1</span>
+        </div>
+
+        <!-- Right-Aligned Next Button -->
+        <div class="flex justify-end sm:justify-end w-full sm:w-auto">
+          <button id="next-btn" class="px-4 py-2 bg-white border text-blue-500 rounded hover:bg-blue-50">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- No products message -->
+      <div id="no-products" class="hidden text-center text-gray-500">
+        <p>No products found in this category.</p>
+      </div>    
+
     </main>
   </div>
 

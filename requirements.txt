@@ -1,7 +1,28 @@
-requests 
-beautifulsoup4 
-pandas
+# Web scraping / request
+requests
+beautifulsoup4
+
+# Data processing
+numpy
+# pandas==1.5.3
+
+# Web API
 fastapi
 uvicorn[standard]
 pydantic
 python-multipart
+
+
+
+
+# LLMs + Environment
+
+groq
+python-dotenv
+
+
+
+# Smart dataframe querying
+pandasai
+pandasai-litellm
+nltk

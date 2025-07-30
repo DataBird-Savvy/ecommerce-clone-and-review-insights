@@ -5,8 +5,14 @@ const categoryList = document.getElementById("category-list");
 const resultCount = document.getElementById("result-count");
 const breadcrumb = document.getElementById("breadcrumb-category");
 const pageTitle = document.getElementById("page-title");
+const pageInfo = document.getElementById("page-info");
+const nextBtn = document.getElementById("next-btn");
 
 let currentCategory = null;
+let currentPage = 1;
+const itemsPerPage = 20;
+let totalPages = 1;
+let currentProducts = [];
 
 // Render star rating
 function ratingStars(rating) {
@@ -17,21 +23,22 @@ function ratingStars(rating) {
   return stars;
 }
 
-// Render products
+// Render products for current page
 function renderProducts(products) {
   productList.innerHTML = "";
 
-  resultCount.textContent = `${products.length} result(s)${
-    currentCategory ? " in " + currentCategory : ""
-  }`;
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageProducts = products.slice(start, end);
 
+  resultCount.textContent = `${products.length} result(s)${currentCategory ? " in " + currentCategory : ""}`;
   breadcrumb.textContent = currentCategory || "All Products";
   pageTitle.textContent = currentCategory || "All Products";
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
 
-  products.forEach((item) => {
+  pageProducts.forEach((item) => {
     const card = document.createElement("div");
-    card.className =
-      "bg-white rounded shadow p-4 flex flex-col items-center text-center";
+    card.className = "bg-white rounded shadow p-4 flex flex-col items-center text-center";
 
     card.innerHTML = `
       <img src="${item.image_url || "https://via.placeholder.com/150"}" alt="${item.title}" class="w-24 h-36 object-contain mb-2" />
@@ -46,6 +53,10 @@ function renderProducts(products) {
 
     productList.appendChild(card);
   });
+
+  // Disable next button on last page
+  nextBtn.disabled = currentPage >= totalPages;
+  nextBtn.classList.toggle("opacity-50", nextBtn.disabled);
 }
 
 // Render categories
@@ -56,6 +67,7 @@ function renderCategories(categories) {
   allBtn.innerHTML = `<a href="#" class="hover:underline text-blue-600">All</a>`;
   allBtn.addEventListener("click", () => {
     currentCategory = null;
+    currentPage = 1;
     fetchAndRenderProducts();
   });
   categoryList.appendChild(allBtn);
@@ -65,6 +77,7 @@ function renderCategories(categories) {
     li.innerHTML = `<a href="#" class="hover:underline">${cat}</a>`;
     li.addEventListener("click", () => {
       currentCategory = cat;
+      currentPage = 1;
       fetchAndRenderProducts();
     });
     categoryList.appendChild(li);
@@ -80,13 +93,23 @@ function fetchAndRenderProducts() {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      renderProducts(data.items);
+      currentProducts = data.items;
+      totalPages = Math.ceil(currentProducts.length / itemsPerPage);
       renderCategories(data.categories);
+      renderProducts(currentProducts);
     })
     .catch((err) => {
       console.error("Failed to load product data:", err);
     });
 }
+
+// Handle "Next" button
+nextBtn.addEventListener("click", () => {
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderProducts(currentProducts);
+  }
+});
 
 // Initial load
 fetchAndRenderProducts();
